@@ -1,0 +1,50 @@
+﻿@page
+@model ATCSHARP.Pages.Reservas.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Criar Reserva</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="Reserva.Cliente" class="control-label"></label>
+                <select asp-for="Reserva.ClienteId" class="form-control" asp-items="ViewBag.ClienteId"></select>
+                <span asp-validation-for="Reserva.ClienteId" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="Reserva.PacoteTuristico" class="control-label"></label>
+                <select asp-for="Reserva.PacoteTuristicoId" class="form-control" asp-items="ViewBag.PacoteTuristicoId"></select>
+                <span asp-validation-for="Reserva.PacoteTuristicoId" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="Reserva.DataReserva" class="control-label"></label>
+                <input asp-for="Reserva.DataReserva" class="form-control" type="date" />
+                <span asp-validation-for="Reserva.DataReserva" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group mt-2">
+                <input type="submit" value="Criar" class="btn btn-primary" />
+            </div>
+            <br />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <br />
+    <a asp-page="Index">Voltar para a lista</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
