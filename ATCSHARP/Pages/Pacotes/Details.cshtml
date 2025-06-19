@@ -48,6 +48,13 @@
             @Html.DisplayFor(model => model.PacoteTuristico.DeleteAt)
         </dd>
     </dl>
+    <h5>Cidades deste pacote:</h5>
+    <ul>
+        @foreach (var destino in Model.PacoteTuristico.Destinos)
+        {
+            <li>@destino.CidadeDestino?.Nome</li>
+        }
+    </ul>
 </div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.PacoteTuristico.Id">Edit</a> |

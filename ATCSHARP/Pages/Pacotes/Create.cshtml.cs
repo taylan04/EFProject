@@ -19,23 +19,44 @@ namespace ATCSHARP.Pages.Pacotes
             _context = context;
         }
 
-        public IActionResult OnGet()
-        {
-            return Page();
-        }
+        public List<SelectListItem> TodasCidades { get; set; } = new();
 
         [BindProperty]
         public PacoteTuristico PacoteTuristico { get; set; } = default!;
 
-        // For more information, see https://aka.ms/RazorPagesCRUD.
+        [BindProperty]
+        public List<int> CidadesSelecionadas { get; set; } = new();
+
+        public void OnGet()
+        {
+            TodasCidades = _context.Cidades
+                .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Nome })
+                .ToList();
+        }
+
+       
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
+                TodasCidades = _context.Cidades.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Nome }).ToList();
                 return Page();
             }
 
+            
             _context.Pacotes.Add(PacoteTuristico);
+            await _context.SaveChangesAsync();
+
+            
+            foreach (var cidadeId in CidadesSelecionadas)
+            {
+                var destino = new Destino
+                {
+                    PacoteTuristicoId = PacoteTuristico.Id,
+                    CidadeDestinoId = cidadeId
+                };
+                _context.Destinos.Add(destino);
+            }
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

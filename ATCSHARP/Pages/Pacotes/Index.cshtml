@@ -1,11 +1,11 @@
-﻿@page
+﻿@page "/"
 @model ATCSHARP.Pages.Pacotes.IndexModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Página Inicial</h1>
+<h1>Pacotes Turísticos</h1>
 
 <p>
     <a asp-page="Create">Criar um novo pacote</a>
@@ -31,6 +31,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.PacoteTuristico[0].DeleteAt)
             </th>
+            <th>
+                Cidades
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -54,6 +57,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DeleteAt)
+            </td>
+            <td>
+                @string.Join(", ", item.Destinos.Select(d => d.CidadeDestino?.Nome))
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |

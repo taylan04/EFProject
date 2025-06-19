@@ -5,7 +5,7 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<h1>Deletar</h1>
 
 <h3>Você quer mesmo deletar esse pacote?</h3>
 <div>
@@ -49,6 +49,13 @@
             @Html.DisplayFor(model => model.PacoteTuristico.DeleteAt)
         </dd>
     </dl>
+    <h5>Cidades deste pacote:</h5>
+    <ul>
+        @foreach (var destino in Model.PacoteTuristico.Destinos)
+        {
+            <li>@destino.CidadeDestino?.Nome</li>
+        }
+    </ul>
     
     <form method="post">
         <input type="hidden" asp-for="PacoteTuristico.Id" />
