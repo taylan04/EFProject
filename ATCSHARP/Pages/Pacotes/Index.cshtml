@@ -1,0 +1,66 @@
+﻿@page
+@model ATCSHARP.Pages.Pacotes.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Página Inicial</h1>
+
+<p>
+    <a asp-page="Create">Criar um novo pacote</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PacoteTuristico[0].Titulo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PacoteTuristico[0].Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PacoteTuristico[0].DataInicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PacoteTuristico[0].CapacidadeMaxima)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PacoteTuristico[0].Preco)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PacoteTuristico[0].DeleteAt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.PacoteTuristico) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Titulo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataInicio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CapacidadeMaxima)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Preco)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeleteAt)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Detalhes</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Deletar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
