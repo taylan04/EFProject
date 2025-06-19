@@ -19,10 +19,24 @@ namespace ATCSHARP.Pages.Reservas
             _context = context;
         }
 
+        [BindProperty]
+        public double ValorDiaria { get; set; }
+
+        [BindProperty]
+        public int Dias {  get; set; }
+
+        public double ValorTotal { get; set; }
+
+        public string Mensagem { get; set; }
+
+        public void PopularForm() {
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nome");
+            ViewData["PacoteTuristicoId"] = new SelectList(_context.Pacotes.Where(p => p.DeleteAt == null), "Id", "Titulo");
+        }
+
         public IActionResult OnGet()
         {
-        ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Id");
-        ViewData["PacoteTuristicoId"] = new SelectList(_context.Pacotes, "Id", "Id");
+            PopularForm();
             return Page();
         }
 
@@ -34,13 +48,17 @@ namespace ATCSHARP.Pages.Reservas
         {
             if (!ModelState.IsValid)
             {
+                PopularForm();
                 return Page();
             }
 
-            _context.Reservas.Add(Reserva);
-            await _context.SaveChangesAsync();
+            Func<double, int, double> calcularTotal = (valorDiaria, dias) => valorDiaria * dias;
+            double totalCalculado = calcularTotal(ValorDiaria, Dias);
+            ValorTotal = totalCalculado; 
+            Mensagem = $"Preço total: {ValorTotal}";
 
-            return RedirectToPage("./Index");
+            PopularForm();
+            return Page();
         }
     }
 }
