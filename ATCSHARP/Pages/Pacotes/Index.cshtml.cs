@@ -23,10 +23,7 @@ namespace ATCSHARP.Pages.Pacotes
 
         public async Task OnGetAsync()
         {
-            PacoteTuristico = await _context.Pacotes
-                .Include(p => p.Destinos)
-                .ThenInclude(d => d.CidadeDestino)
-                .ToListAsync();
+            PacoteTuristico = await _context.Pacotes.Where(p => p.DeleteAt == null).Include(p => p.Destinos).ThenInclude(d => d.CidadeDestino).ToListAsync();
         }
     }
 }
