@@ -15,6 +15,7 @@
         //public event Action<String> CapacityReached;
 
         public delegate void CapacityReachedDelegate(string mensagem);
+
         public event CapacityReachedDelegate CapacityReached;
         public void AdicionarReserva(Reserva reserva) {
 

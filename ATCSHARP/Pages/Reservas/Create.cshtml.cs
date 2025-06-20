@@ -9,23 +9,18 @@ using ATCSHARP.Data;
 using ATCSHARP.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ATCSHARP.Pages.Reservas
-{
-    public class CreateModel : PageModel
-    {
+namespace ATCSHARP.Pages.Reservas {
+    public class CreateModel : PageModel {
         private readonly ATCSHARP.Data.ApplicationDbContext _context;
 
-        public CreateModel(ATCSHARP.Data.ApplicationDbContext context)
-        {
+        public CreateModel(ATCSHARP.Data.ApplicationDbContext context) {
             _context = context;
-            
+
         }
 
-        public IActionResult OnGet()
-        {
-        ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nome");
-        ViewData["PacoteTuristicoId"] = new SelectList(_context.Pacotes.Where(p => p.DeleteAt == null), "Id", "Titulo");
-        return Page();
+        public IActionResult OnGet() {
+            IniciarSelects();
+            return Page();
         }
 
         [BindProperty]
@@ -33,13 +28,28 @@ namespace ATCSHARP.Pages.Reservas
 
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync() {
-            
+
+            IniciarSelects();
+
             if (!ModelState.IsValid) {
+                return Page();
+            }
+            
+            bool reservaExistente = await _context.Reservas.AnyAsync(r => r.ClienteId == Reserva.ClienteId && r.PacoteTuristicoId == Reserva.PacoteTuristicoId && r.DataReserva.Date == Reserva.DataReserva.Date);
+
+            if (reservaExistente) {
+                ModelState.AddModelError(string.Empty, "Você já possui uma reserva para este pacote nesta data.");
                 return Page();
             }
 
             var pacote = await _context.Pacotes.Include(p => p.Reservas).FirstOrDefaultAsync(p => p.Id == Reserva.PacoteTuristicoId);
-            
+
+            if (pacote.DataInicio.Date < DateTime.Today.Date) {
+                ModelState.AddModelError(string.Empty, "Pacotes que já iniciaram não podem ser reservados.");
+                IniciarSelects();
+                return Page();
+            }
+
             bool capacityReached = false;
 
             pacote.CapacityReached += (msg) => {
@@ -48,13 +58,11 @@ namespace ATCSHARP.Pages.Reservas
                 capacityReached = true;
             };
 
-
             pacote.AdicionarReserva(Reserva);
 
             if (capacityReached) {
                 //esses views data é para popular de novo os meus selects no formulário quando o meu event de erro disparar
-                ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nome");
-                ViewData["PacoteTuristicoId"] = new SelectList(_context.Pacotes.Where(p => p.DeleteAt == null), "Id", "Titulo");
+                IniciarSelects();
                 return Page();
             }
 
@@ -64,6 +72,11 @@ namespace ATCSHARP.Pages.Reservas
 
 
             return RedirectToPage("./Index");
+        }
+
+        public void IniciarSelects() {
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nome");
+            ViewData["PacoteTuristicoId"] = new SelectList(_context.Pacotes.Where(p => p.DeleteAt == null), "Id", "Titulo");
         }
 
     }

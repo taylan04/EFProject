@@ -29,9 +29,7 @@ namespace ATCSHARP.Pages.Pacotes
 
         public void OnGet()
         {
-            TodasCidades = _context.Cidades
-                .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Nome })
-                .ToList();
+            IniciarSelects();
         }
 
        
@@ -39,7 +37,7 @@ namespace ATCSHARP.Pages.Pacotes
         {
             if (!ModelState.IsValid)
             {
-                TodasCidades = _context.Cidades.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Nome }).ToList();
+                IniciarSelects();
                 return Page();
             }
 
@@ -60,6 +58,10 @@ namespace ATCSHARP.Pages.Pacotes
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
+        }
+
+        public void IniciarSelects() {
+            TodasCidades = _context.Cidades.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Nome }).ToList();
         }
     }
 }

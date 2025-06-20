@@ -9,61 +9,49 @@ using Microsoft.EntityFrameworkCore;
 using ATCSHARP.Data;
 using ATCSHARP.Models;
 
-namespace ATCSHARP.Pages.Reservas
-{
-    public class EditModel : PageModel
-    {
+namespace ATCSHARP.Pages.Reservas {
+    public class EditModel : PageModel {
         private readonly ATCSHARP.Data.ApplicationDbContext _context;
 
-        public EditModel(ATCSHARP.Data.ApplicationDbContext context)
-        {
+        public EditModel(ATCSHARP.Data.ApplicationDbContext context) {
             _context = context;
         }
 
         [BindProperty]
         public Reserva Reserva { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
+        public async Task<IActionResult> OnGetAsync(int? id) {
+            if (id == null) {
                 return NotFound();
             }
 
-            var reserva =  await _context.Reservas.FirstOrDefaultAsync(m => m.Id == id);
-            if (reserva == null)
-            {
+            var reserva = await _context.Reservas.FirstOrDefaultAsync(m => m.Id == id);
+            if (reserva == null) {
                 return NotFound();
             }
             Reserva = reserva;
-           ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nome");
-           ViewData["PacoteTuristicoId"] = new SelectList(_context.Pacotes, "Id", "Titulo");
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nome");
+            ViewData["PacoteTuristicoId"] = new SelectList(_context.Pacotes, "Id", "Titulo");
             return Page();
         }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more information, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
+        public async Task<IActionResult> OnPostAsync() {
+            if (!ModelState.IsValid) {
                 return Page();
             }
 
             _context.Attach(Reserva).State = EntityState.Modified;
 
-            try
-            {
+            try {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ReservaExists(Reserva.Id))
-                {
+            catch (DbUpdateConcurrencyException) {
+                if (!ReservaExists(Reserva.Id)) {
                     return NotFound();
                 }
-                else
-                {
+                else {
                     throw;
                 }
             }
@@ -71,8 +59,7 @@ namespace ATCSHARP.Pages.Reservas
             return RedirectToPage("./Index");
         }
 
-        private bool ReservaExists(int id)
-        {
+        private bool ReservaExists(int id) {
             return _context.Reservas.Any(e => e.Id == id);
         }
     }
