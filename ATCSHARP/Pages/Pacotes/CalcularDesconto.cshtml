@@ -60,7 +60,6 @@
                 <p><strong>Preço com 10% de desconto: </strong> R$@Model.PrecoComDesconto.ToString()</p>
             </div>
             <div>
-                <br />
                 <p><strong>Simulação dentro da List de memória:</strong></p>
                 <ul>
                     @foreach (var log in Model.Memoria) {
@@ -73,6 +72,7 @@
 </div>
 
 <div>
+    <br />
     <a asp-page="Index">Voltar para a Lista</a>
 </div>
 

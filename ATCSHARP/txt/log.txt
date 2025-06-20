@@ -12,3 +12,10 @@ Simulação de desconto: preço original 1500, com desconto 1350
 Simulação de desconto: preço original 1500, com desconto 1350
 Simulação de desconto: preço original 1500, com desconto 1350
 Simulação de desconto: preço original 1500, com desconto 1350
+Simulação de desconto: preço original 1000, com desconto 900
+Simulação de desconto: preço original 1000, com desconto 900
+Simulação de desconto: preço original 1000, com desconto 900
+Simulação de desconto: preço original R$1000, com desconto R$900
+Simulação de desconto: preço original R$1000 | com desconto R$900
+Simulação de desconto: preço original R$1000 | com desconto R$900
+Simulação de desconto: preço original R$1000 | com desconto R$900

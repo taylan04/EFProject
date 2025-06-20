@@ -72,7 +72,7 @@ namespace ATCSHARP.Pages.Pacotes {
 
             CalculateDelegate aplicacaoDoDesconto = preco => preco * 0.9;
             PrecoComDesconto = aplicacaoDoDesconto(PacoteTuristico.Preco);
-            Loggers?.Invoke($"Simulação de desconto: preço original {PacoteTuristico.Preco}, com desconto {PrecoComDesconto}");
+            Loggers?.Invoke($"Simulação de desconto: preço original R${PacoteTuristico.Preco} | com desconto R${PrecoComDesconto}");
 
             return Page();
         }
