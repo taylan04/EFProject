@@ -29,11 +29,6 @@ namespace ATCSHARP.Pages.Reservas
 
         public string Mensagem { get; set; }
 
-        public void PopularForm() {
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nome");
-            ViewData["PacoteTuristicoId"] = new SelectList(_context.Pacotes.Where(p => p.DeleteAt == null), "Id", "Titulo");
-        }
-
         public IActionResult OnGet()
         {
             PopularForm();
@@ -59,6 +54,11 @@ namespace ATCSHARP.Pages.Reservas
 
             PopularForm();
             return Page();
+        }
+
+        public void PopularForm() {
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nome");
+            ViewData["PacoteTuristicoId"] = new SelectList(_context.Pacotes.Where(p => p.DeleteAt == null), "Id", "Titulo");
         }
     }
 }

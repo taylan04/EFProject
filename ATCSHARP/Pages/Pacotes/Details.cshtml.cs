@@ -28,10 +28,7 @@ namespace ATCSHARP.Pages.Pacotes
                 return NotFound();
             }
 
-            var pacoteturistico = await _context.Pacotes
-                .Include(p => p.Destinos)
-                .ThenInclude(d => d.CidadeDestino)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var pacoteturistico = await _context.Pacotes.Include(p => p.Destinos).ThenInclude(d => d.CidadeDestino).FirstOrDefaultAsync(m => m.Id == id);
             if (pacoteturistico == null)
             {
                 return NotFound();

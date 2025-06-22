@@ -23,8 +23,7 @@ namespace ATCSHARP.Pages.Cidades
 
         public async Task OnGetAsync()
         {
-            CidadeDestino = await _context.Cidades
-                .Include(c => c.PaisDestino).ToListAsync();
+            CidadeDestino = await _context.Cidades.Include(c => c.PaisDestino).ToListAsync();
         }
     }
 }

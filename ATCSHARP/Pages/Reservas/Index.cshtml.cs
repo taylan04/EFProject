@@ -23,9 +23,7 @@ namespace ATCSHARP.Pages.Reservas
 
         public async Task OnGetAsync()
         {
-            Reserva = await _context.Reservas
-                .Include(r => r.Cliente)
-                .Include(r => r.PacoteTuristico).ToListAsync();
+            Reserva = await _context.Reservas.Include(r => r.Cliente).Include(r => r.PacoteTuristico).ToListAsync();
         }
     }
 }

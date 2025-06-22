@@ -29,14 +29,6 @@ namespace ATCSHARP.Pages.Pacotes {
         [BindProperty]
         public List<int> CidadesSelecionadas { get; set; } = new();
 
-        private void InicializarLoggers() {
-            if (Loggers == null) {
-                Loggers = LogToConsole;
-                Loggers += LogToFile;
-                Loggers += LogToMemory;
-            }
-        }
-
 
         public void LogToConsole(string msg) {
             Console.WriteLine(msg);
@@ -77,5 +69,10 @@ namespace ATCSHARP.Pages.Pacotes {
             return Page();
         }
 
+        private void InicializarLoggers() {
+                Loggers = LogToConsole;
+                Loggers += LogToFile;
+                Loggers += LogToMemory; 
+        }
     }
 }
