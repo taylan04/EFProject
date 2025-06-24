@@ -23,8 +23,10 @@ namespace ATCSHARP.Pages.Reservas {
             return Page();
         }
 
+
         [BindProperty]
         public Reserva Reserva { get; set; } = default!;
+
 
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync() {
@@ -32,23 +34,21 @@ namespace ATCSHARP.Pages.Reservas {
             IniciarSelects();
 
             if (!ModelState.IsValid) {
+
                 return Page();
             }
-            
-            bool reservaExistente = await _context.Reservas.AnyAsync(r => r.ClienteId == Reserva.ClienteId && r.PacoteTuristicoId == Reserva.PacoteTuristicoId && r.DataReserva.Date == Reserva.DataReserva.Date);
+
+            //bool reservaExistente = await _context.Reservas.AnyAsync(r => r.ClienteId == Reserva.ClienteId && r.PacoteTuristicoId == Reserva.PacoteTuristicoId && r.DataReserva.Date == Reserva.DataReserva.Date);
+            bool reservaExistente = await _context.Reservas.AnyAsync(r => r.ClienteId == Reserva.ClienteId && r.PacoteTuristicoId == Reserva.PacoteTuristicoId);
 
             if (reservaExistente) {
-                ModelState.AddModelError(string.Empty, "Você já possui uma reserva para este pacote nesta data.");
+                ModelState.AddModelError(string.Empty, "Você já possui uma reserva para este pacote.");
                 return Page();
             }
 
             var pacote = await _context.Pacotes.Include(p => p.Reservas).FirstOrDefaultAsync(p => p.Id == Reserva.PacoteTuristicoId);
 
-            if (pacote.DataInicio.Date < DateTime.Today.Date) {
-                ModelState.AddModelError(string.Empty, "Pacotes que já iniciaram não podem ser reservados.");
-                IniciarSelects();
-                return Page();
-            }
+
 
             bool capacityReached = false;
 
@@ -76,7 +76,7 @@ namespace ATCSHARP.Pages.Reservas {
 
         public void IniciarSelects() {
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nome");
-            ViewData["PacoteTuristicoId"] = new SelectList(_context.Pacotes.Where(p => p.DeleteAt == null), "Id", "Titulo");
+            ViewData["PacoteTuristicoId"] = new SelectList(_context.Pacotes.Where(p => p.DeleteAt == null).Where(p => p.DataInicio >= DateTime.Now), "Id", "Titulo");
         }
 
     }

@@ -8,22 +8,21 @@ using Microsoft.EntityFrameworkCore;
 using ATCSHARP.Data;
 using ATCSHARP.Models;
 
-namespace ATCSHARP.Pages.Pacotes
-{
-    public class IndexModel : PageModel
-    {
+namespace ATCSHARP.Pages.Pacotes {
+    public class IndexModel : PageModel {
         private readonly ATCSHARP.Data.ApplicationDbContext _context;
 
-        public IndexModel(ATCSHARP.Data.ApplicationDbContext context)
-        {
+        public IndexModel(ATCSHARP.Data.ApplicationDbContext context) {
             _context = context;
         }
 
-        public IList<PacoteTuristico> PacoteTuristico { get;set; } = default!;
+        public IList<PacoteTuristico> PacoteTuristico { get; set; } = default!;
 
-        public async Task OnGetAsync()
-        {
-            PacoteTuristico = await _context.Pacotes.Where(p => p.DeleteAt == null).Include(p => p.Destinos).ThenInclude(d => d.CidadeDestino).ToListAsync();
+        public async Task OnGetAsync() {
+            PacoteTuristico = await _context.Pacotes.Where(p => p.DeleteAt == null)
+                .Where(p => p.DataInicio >= DateTime.Now)
+                .Include(p => p.Destinos)
+                .ThenInclude(d => d.CidadeDestino).ToListAsync();
         }
     }
 }

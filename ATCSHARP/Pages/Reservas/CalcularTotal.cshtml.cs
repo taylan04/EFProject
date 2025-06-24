@@ -50,7 +50,7 @@ namespace ATCSHARP.Pages.Reservas
             Func<double, int, double> calcularTotal = (valorDiaria, dias) => valorDiaria * dias;
             double totalCalculado = calcularTotal(ValorDiaria, Dias);
             ValorTotal = totalCalculado; 
-            Mensagem = $"Preço total: {ValorTotal}";
+            Mensagem = $"Preço total: R${ValorTotal}";
 
             PopularForm();
             return Page();
